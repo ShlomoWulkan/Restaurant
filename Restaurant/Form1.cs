@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,8 @@ namespace Restaurant
     public partial class Form1 : Form
     {
         ConnectToXML XMLConnection = new ConnectToXML();
-        List<string> myOrders = new List<string>();
+        List<List<string>> myOrders = new List<List<string>>();
+        List<string> myDishe = new List<string>();
 
         public Form1()
         {
@@ -38,8 +40,9 @@ namespace Restaurant
             {
                 MessageBox.Show("אנא מלאו את כל הנתונים");
             } else {
+                myDishe.AddRange(new List<string>() { name, disheType, disheName});
+                myOrders.Add(myDishe);
                 string order = $"{disheName}-{disheType}-{name}";
-                myOrders.Add(order);
                 lstFood.Items.Add(order);
             }
         }
@@ -86,7 +89,8 @@ namespace Restaurant
 
         private void btnInsertToXml_Click(object sender, EventArgs e)
         {
-            XMLConnection.CreateXMLDete(myOrders);
+            XMLConnection.CreateXMLData(myOrders);
+            MessageBox.Show("ההזמנה נשמרה בהצלחה");
         }
     }
 }

@@ -44,23 +44,36 @@ namespace Restaurant
             List<string> myOrders = new List<string>();
             XmlDocument xmlDoc = GetXmlDocument();
             XmlNodeList disheNodes = xmlDoc.GetElementsByTagName("dishe");
-            foreach (XmlNode disheNode in disheNodes)
+            for (int i = 0; i < disheNodes.Count; i++)
             {
-                myOrders.Add(disheNode.InnerText);
+                string name = xmlDoc.GetElementsByTagName("name")[i].InnerText;
+                string disheType = xmlDoc.GetElementsByTagName("disheType")[i].InnerText;
+                string disheName = xmlDoc.GetElementsByTagName("disheName")[i].InnerText;
+
+                myOrders.Add($"{disheName}-{disheType}-{name}");
             }
             return myOrders;
         }
-        public void CreateXMLDete(List<string> orders)
+        public void CreateXMLData(List<List<string>> orders)
         {
             XmlDocument xmlDoc = GetXmlDocument();
             XmlElement rootNode = xmlDoc.DocumentElement;
 
-            foreach (string order in orders) 
+            for (int i = 0; i < orders.Count; i++)
             {
 
                 XmlNode newDishe = xmlDoc.CreateElement("dishe");
+                XmlNode newMame = xmlDoc.CreateElement("name");
+                XmlNode newDisheType = xmlDoc.CreateElement("disheType");
+                XmlNode newDisheName = xmlDoc.CreateElement("disheName");
+
                 rootNode.AppendChild(newDishe);
-                newDishe.InnerText = order;
+                newDishe.AppendChild(newMame);
+                newDishe.AppendChild(newDisheType);
+                newDishe.AppendChild(newDisheName);
+                newMame.InnerText = orders[i][0];
+                newDisheType.InnerText = orders[i][1];
+                newDisheName.InnerText = orders[i][2];
                 xmlDoc.Save(pathName);
             }
         }
