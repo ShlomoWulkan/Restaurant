@@ -89,8 +89,12 @@ namespace Restaurant
 
         private void btnInsertToXml_Click(object sender, EventArgs e)
         {
-            XMLConnection.CreateXMLData(myOrders);
-            MessageBox.Show("ההזמנה נשמרה בהצלחה");
+            DialogResult result =  MessageBox.Show("?האם אתה בטוח רוצה לשמור", "Confirmation", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes) 
+            {
+                XMLConnection.CreateXMLData(myOrders);
+                MessageBox.Show("ההזמנה נשמרה בהצלחה");
+            }
         }
     }
 }
